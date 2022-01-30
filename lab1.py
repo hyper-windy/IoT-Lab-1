@@ -1,6 +1,8 @@
 import json
 import time
 import paho.mqtt.client as mqttclient
+import geocoder
+import random
 
 print("Xin chào ThingsBoard")
 
@@ -49,14 +51,17 @@ humi = 50
 light_intesity = 100
 counter = 0
 
-longitude = 106.7
-latitude = 10.6
+# longitude = 106.7
+# latitude = 10.6
+geo = geocoder.ip('me')
+latitude, longitude = geo.latlng
+# print(latitude, longitude)
 
 while True:
     collect_data = {'temperature': temp, 'humidity': humi,
                     'light': light_intesity, 'longitude': longitude, 'latitude': latitude}
-    temp += 1
-    humi += 1
+    temp = random.randint(20, 92)
+    humi = random.randint(0, 100)
     light_intesity += 1
     client.publish('v1/devices/me/telemetry', json.dumps(collect_data), 1)
-    time.sleep(5)
+    time.sleep(10)
